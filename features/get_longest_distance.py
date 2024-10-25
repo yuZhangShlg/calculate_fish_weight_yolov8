@@ -5,7 +5,7 @@ import astropy.units as u
 
 
 def get_longest_distance(img):
-    skeleton = cv2.imread(img, 0) #in numpy array format
+    skeleton = cv2.imread(img, 0)  # in numpy array format
     fil = FilFinder2D(skeleton, distance=250 * u.pc, mask=skeleton)
     fil.preprocess_image(flatten_percent=85)
     fil.create_mask(border_masking=True, verbose=False, use_existing_mask=True)

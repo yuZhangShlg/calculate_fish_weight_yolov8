@@ -1,4 +1,4 @@
-from ultralytics.yolo.utils.ops import scale_image
+from ultralytics.utils.ops import scale_image
 import cv2
 import numpy as np
 
@@ -16,7 +16,7 @@ def predict_on_image(model, img, conf):
     masks = result.masks.data.cpu().numpy()  # masks, (N, H, W)
     masks = np.moveaxis(masks, 0, -1)  # masks, (H, W, N)
     # rescale masks to original image
-    masks = scale_image(masks.shape[:2], masks, result.masks.orig_shape)
+    masks = scale_image(masks, result.masks.orig_shape)
     masks = np.moveaxis(masks, -1, 0)  # masks, (N, H, W)
 
     return boxes, masks, cls, probs

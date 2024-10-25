@@ -18,7 +18,6 @@ def predict(img):
 
     # predict by YOLOv8
     boxes, masks, cls, probs = predict_on_image(model, img_path, conf=0.55)
-
     image_copy = np.copy(img)
 
     image_with_contours = np.zeros_like(img, dtype=np.uint8)
@@ -42,6 +41,11 @@ def predict(img):
         number_fish_specific = get_number_and_total_weight(number_fish_specific, fish_array)
         fish_array.clear()
 
-    insert_into_database(total_weight, number_fish_specific)
+    print(f"total_weight: {total_weight}, number_fish_specific: {number_fish_specific}")
     cv2.imwrite(img_path, image_copy)
     return number_fish_specific
+
+
+if __name__ == '__main__':
+    img = "D:\\PycharmProjects\\calculate_fish_weight_yolov8\\images\\carp2.jpg"
+    res = predict(img)
