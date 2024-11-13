@@ -1,6 +1,7 @@
 
 import pandas as pd
 import numpy as np
+import hashlib
 
 CITY_NAME = [
     "无锡", "长春", "青岛", "大连", "太原", "合肥", "南昌", "南宁", "昆明", "贵阳", "株洲", "衡山", "泰安", "岳阳", "中山",
@@ -16,7 +17,8 @@ CITY_NAME = [
     "吉安", "百色", "周口", "阜宁", "盐城", "亳州", "芜湖", "宜宾", "南阳", "资阳", "内江", "遵义", "衡水", "潍坊", "淄博",
     "天水", "承德", "朝阳", "阜新", "霸州", "锦州", "盘锦", "自贡", "泸州", "随州", "扬州", "泰州", "南通", "毕节", "安康",
     "许昌", "新乡", "鹰潭", "抚州", "新余", "宜春", "萍乡", "湘潭", "娄底", "邵阳", "怀化", "安顺", "曲靖", "秦皇岛",
-    "嘉峪关", "攀枝花", "张家口", "连云港", "哈尔滨", "石家庄", "驻马店", "乌鲁木齐", "呼和浩特"]
+    "嘉峪关", "攀枝花", "张家口", "连云港", "哈尔滨", "石家庄", "驻马店", "乌鲁木齐", "呼和浩特"
+]
 DATE = [
     "20231230", "20231231", "20240101", "20240210", "20240211", "20240212", "20240213", "20240214", "20240215",
     "20240216", "20240217", "20240404", "20240405", "20240406", "20240501", "20240502", "20240503", "20240504",
@@ -25,12 +27,15 @@ DATE = [
     "20221231", "20230101", "20230121", "20230122", "20230123", "20230124", "20230125", "20230126", "20230127",
     "20230216", "20230217", "20230405", "20230429", "20230430", "20230501", "20230502", "20230503",  "20230622",
     "20230623", "20230624", "20230929", "20230930", "20231001", "20231002", "20231003", "20231004", "20231005",
-    "20231006"]
+    "20231006"
+]
 
 
-def generate_unique_hash(input_str):
-    unique_hash = hash(input_str)
-    return abs(unique_hash)
+def get_md5_num(username):
+    md5_machine = hashlib.md5()
+    md5_machine.update(username.encode('utf-8'))
+    md5_hash_string = md5_machine.hexdigest()
+    return md5_hash_string
 
 
 def railway_data(file_path):
@@ -40,7 +45,8 @@ def railway_data(file_path):
     )
     for city in CITY_NAME:
         for date in DATE:
-            _id = generate_unique_hash(city + date)
+            value = city + date
+            _id = get_md5_num(value)
             label = int(np.floor(np.random.random() / 0.7))
             train_count = int(np.random.randint(100, 2000))
             train_avg_people_count = int(np.random.randint(600, 1200))
@@ -49,9 +55,10 @@ def railway_data(file_path):
             train_people_leave = train_people_leave_avg * train_avg_people_count
             train_people_leave_ratio = round(train_people_leave_avg / train_avg_people_count, 4)
 
-            data = [_id, city, date, label, train_count, train_people_count, train_avg_people_count,
-                    train_people_leave, train_people_leave_avg, train_people_leave_ratio]
-
+            data = [
+                _id, city, date, label, train_count, train_people_count, train_avg_people_count,
+                train_people_leave, train_people_leave_avg, train_people_leave_ratio
+            ]
             result.loc[len(result)] = data
 
     result.to_csv(file_path, index=False, sep=',')
@@ -63,7 +70,8 @@ def app_data(file_path):
     )
     for city in CITY_NAME:
         for date in DATE:
-            _id = generate_unique_hash(city + date)
+            value = city + date
+            _id = get_md5_num(value)
             reserve_train_people = int(np.random.randint(50000, 500000))
             reserve_hotel_people = int(np.random.randint(10000, 200000))
             reserve_scenic_people = int(np.random.randint(30000, 250000))
@@ -75,7 +83,7 @@ def app_data(file_path):
 
 
 if __name__ == '__main__':
-    file_path_value = 'C:\\Users\\yu.zhang\\Desktop\\铁科院\\app_data.csv'
-    app_data(file_path_value)
+    file_path_value = 'C:\\Users\\yu.zhang\\Desktop\\铁科院\\railway_data.csv'
+    railway_data(file_path_value)
 
 
