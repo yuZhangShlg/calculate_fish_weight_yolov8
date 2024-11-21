@@ -64,26 +64,56 @@ def railway_data(file_path):
     result.to_csv(file_path, index=False, sep=',')
 
 
-def app_data(file_path):
+def highway_data(file_path):
     result = pd.DataFrame(
-        columns=["id", "locations", "date", "reserve_train_people", "reserve_hotel_people", "reserve_scenic_people"]
+        columns=["id", "locations", "date", "toll_station", "toll_station_in_cars",
+                 "toll_station_in_sedans", "toll_station_out_cars", "toll_station_out_sedans"]
     )
     for city in CITY_NAME:
         for date in DATE:
             value = city + date
             _id = get_md5_num(value)
-            reserve_train_people = int(np.random.randint(50000, 500000))
-            reserve_hotel_people = int(np.random.randint(10000, 200000))
-            reserve_scenic_people = int(np.random.randint(30000, 250000))
+            toll_station = int(np.random.randint(5, 40))
+            toll_station_in_cars = int(np.random.randint(50000, 700000))
+            toll_station_in_sedans = int(np.random.randint(30000, toll_station_in_cars))
+            toll_station_out_cars = int(np.random.randint(50000, 700000))
+            toll_station_out_sedans = int(np.random.randint(30000, toll_station_out_cars))
 
-            data = [_id, city, date, reserve_train_people, reserve_hotel_people, reserve_scenic_people]
+            data = [_id, city, date, toll_station, toll_station_in_cars, toll_station_in_sedans,
+                    toll_station_out_cars, toll_station_out_sedans]
+            result.loc[len(result)] = data
+
+    result.to_csv(file_path, index=False, sep=',')
+
+
+def aircraft_data(file_path):
+    result = pd.DataFrame(
+        columns=["id", "locations", "date", "airport_count", "airport_end_flight_count",
+                 "airport_start_flight_count", "airport_transfer_flight_count", "airport_end_flight_person_count",
+                 "airport_start_flight_person_count", "airport_transfer_flight_person_count"]
+    )
+    for city in CITY_NAME:
+        for date in DATE:
+            value = city + date
+            _id = get_md5_num(value)
+            airport_count = int(np.random.randint(0, 4))
+            airport_end_flight_count = int(np.random.randint(50, 1000))
+            airport_start_flight_count = int(np.random.randint(50, 1000))
+            airport_transfer_flight_count = int(np.random.randint(20, 100))
+            airport_end_flight_person_count = int(np.random.randint(160, 800))
+            airport_start_flight_person_count = int(np.random.randint(160, 800))
+            airport_transfer_flight_person_count = int(np.random.randint(50, 150))
+
+            data = [_id, city, date, airport_count, airport_end_flight_count, airport_start_flight_count,
+                    airport_transfer_flight_count, airport_end_flight_person_count,
+                    airport_start_flight_person_count, airport_transfer_flight_person_count]
             result.loc[len(result)] = data
 
     result.to_csv(file_path, index=False, sep=',')
 
 
 if __name__ == '__main__':
-    file_path_value = 'C:\\Users\\yu.zhang\\Desktop\\铁科院\\railway_data.csv'
-    railway_data(file_path_value)
+    file_path_value = 'C:\\Users\\yu.zhang\\Desktop\\铁科院\\aircraft_data.csv'
+    aircraft_data(file_path_value)
 
 
