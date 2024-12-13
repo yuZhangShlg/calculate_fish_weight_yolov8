@@ -41,23 +41,26 @@ def get_md5_num(username):
 def railway_data(file_path):
     result = pd.DataFrame(
         columns=["id", "locations", "date", "label", "train_count", "train_people_count", "train_avg_people_count",
-                 "train_people_leave", "train_people_leave_avg", "train_people_leave_ratio"]
+                 "train_people_leave", "train_count_avg_near_month", "train_count_avg_near_week",
+                 "train_count_avg_this_month"]
     )
     for city in CITY_NAME:
         for date in DATE:
             value = city + date
             _id = get_md5_num(value)
-            label = int(np.floor(np.random.random() / 0.7))
+            label = int(np.random.randint(50000, 1200000))
             train_count = int(np.random.randint(100, 2000))
             train_avg_people_count = int(np.random.randint(600, 1200))
             train_people_count = train_count * train_avg_people_count
             train_people_leave_avg = int(np.random.randint(50, int(train_avg_people_count / 2)))
             train_people_leave = train_people_leave_avg * train_avg_people_count
-            train_people_leave_ratio = round(train_people_leave_avg / train_avg_people_count, 4)
+            train_count_avg_near_month = int(np.random.randint(100, 2000))
+            train_count_avg_near_week = int(np.random.randint(100, 2000))
+            train_count_avg_this_month = int(np.random.randint(100, 2000))
 
             data = [
                 _id, city, date, label, train_count, train_people_count, train_avg_people_count,
-                train_people_leave, train_people_leave_avg, train_people_leave_ratio
+                train_people_leave, train_count_avg_near_month, train_count_avg_near_week, train_count_avg_this_month
             ]
             result.loc[len(result)] = data
 
@@ -67,7 +70,10 @@ def railway_data(file_path):
 def highway_data(file_path):
     result = pd.DataFrame(
         columns=["id", "locations", "date", "toll_station", "toll_station_in_cars",
-                 "toll_station_in_sedans", "toll_station_out_cars", "toll_station_out_sedans"]
+                 "toll_station_in_sedans", "toll_station_in_bus", "toll_station_out_cars",
+                 "toll_station_out_sedans", "toll_station_out_bus", "station_cars_trans_railway",
+                 "toll_station_in_cars_near_month", "toll_station_in_cars_near_week",
+                 "toll_station_in_cars_this_month"]
     )
     for city in CITY_NAME:
         for date in DATE:
@@ -76,11 +82,18 @@ def highway_data(file_path):
             toll_station = int(np.random.randint(5, 40))
             toll_station_in_cars = int(np.random.randint(50000, 700000))
             toll_station_in_sedans = int(np.random.randint(30000, toll_station_in_cars))
+            toll_station_in_bus = int(np.random.randint(1000, 10000))
             toll_station_out_cars = int(np.random.randint(50000, 700000))
             toll_station_out_sedans = int(np.random.randint(30000, toll_station_out_cars))
+            toll_station_out_bus = int(np.random.randint(1000, 10000))
+            station_cars_trans_railway = float(np.random.random() / 10)
+            toll_station_in_cars_near_month = int(np.random.randint(30000, toll_station_in_cars))
+            toll_station_in_cars_near_week = int(np.random.randint(30000, toll_station_in_cars))
+            toll_station_in_cars_this_month = int(np.random.randint(30000, toll_station_in_cars))
 
-            data = [_id, city, date, toll_station, toll_station_in_cars, toll_station_in_sedans,
-                    toll_station_out_cars, toll_station_out_sedans]
+            data = [_id, city, date, toll_station, toll_station_in_cars, toll_station_in_sedans, toll_station_in_bus,
+                    toll_station_out_cars, toll_station_out_sedans, toll_station_out_bus, station_cars_trans_railway,
+                    toll_station_in_cars_near_month, toll_station_in_cars_near_week, toll_station_in_cars_this_month]
             result.loc[len(result)] = data
 
     result.to_csv(file_path, index=False, sep=',')
@@ -90,7 +103,9 @@ def aircraft_data(file_path):
     result = pd.DataFrame(
         columns=["id", "locations", "date", "airport_count", "airport_end_flight_count",
                  "airport_start_flight_count", "airport_transfer_flight_count", "airport_end_flight_person_count",
-                 "airport_start_flight_person_count", "airport_transfer_flight_person_count"]
+                 "airport_start_flight_person_count", "airport_transfer_flight_person_count",
+                 "airport_transfer_railway", "airport_end_flight_count_near_month",
+                 "airport_end_flight_count_near_week", "airport_end_flight_count_this_month"]
     )
     for city in CITY_NAME:
         for date in DATE:
@@ -103,10 +118,16 @@ def aircraft_data(file_path):
             airport_end_flight_person_count = int(np.random.randint(160, 800))
             airport_start_flight_person_count = int(np.random.randint(160, 800))
             airport_transfer_flight_person_count = int(np.random.randint(50, 150))
+            airport_transfer_railway = float(np.random.random() / 10)
+            airport_end_flight_count_near_month = int(np.random.randint(50, 1000))
+            airport_end_flight_count_near_week = int(np.random.randint(50, 1000))
+            airport_end_flight_count_this_month = int(np.random.randint(50, 1000))
 
             data = [_id, city, date, airport_count, airport_end_flight_count, airport_start_flight_count,
                     airport_transfer_flight_count, airport_end_flight_person_count,
-                    airport_start_flight_person_count, airport_transfer_flight_person_count]
+                    airport_start_flight_person_count, airport_transfer_flight_person_count,
+                    airport_transfer_railway, airport_end_flight_count_near_month,
+                    airport_end_flight_count_near_week, airport_end_flight_count_this_month]
             result.loc[len(result)] = data
 
     result.to_csv(file_path, index=False, sep=',')
