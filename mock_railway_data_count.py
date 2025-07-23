@@ -49,7 +49,7 @@ DATE = [
     "20241101", "20241102", "20241103", "20241104", "20241105", "20241106", "20241107", "20241108", "20241109",
     "20241110", "20241111", "20241112", "20241113", "20241114", "20241115", "20241116", "20241117", "20241118",
     "20241119", "20241120", "20241121", "20241122", "20241123", "20241124", "20241125", "20241126", "20241127",
-    "20241128", "20241129", "20241130"]
+    "20241128", "20241129", "20241130", "20241201"]
 
 
 def get_md5_num(username):
@@ -80,7 +80,7 @@ def mock_data(railway_path, highway_path, aircraft_path):
         for date in DATE:
             value = city + date
             _id = get_md5_num(value)
-            label = int(np.random.randint(50000, 1200000))
+            label = int(np.random.randint(200000, 250000))
 
             train_people_count = int(np.random.randint(int(label * 0.4), int(label * 0.6)))
             train_people_count_avg_near_month = int(np.random.randint(int(label * 0.4), int(label * 0.6)))
