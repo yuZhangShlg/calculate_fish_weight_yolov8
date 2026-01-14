@@ -74,11 +74,11 @@ def mock_data(jtysj_path, gjgs_path):
             times = time.strptime(times[0], "%Y%m%d %H:%M:%S")
             times = int(time.mktime(times))
 
-            data_jtysj = [_id, zdmc, date, times]
+            data_jtysj = [_id, zdmc, date, int(times)]
             result_jtysj.loc[len(result_jtysj)] = data_jtysj
 
             _time = np.random.normal(loc=times, scale=180)
-            data_gjgs = [_id, zdmc, date, _time]
+            data_gjgs = [_id, zdmc, date, int(_time)]
             result_gjgs.loc[len(result_gjgs)] = data_gjgs
 
     result_jtysj.to_csv(jtysj_path, index=False, sep=',')
